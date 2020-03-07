@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Runner
 {
-    public class DestCloneClass
+    public class DestClass
     {
         public int IntProp { get; set; }
         public string StringProp { get; set; }

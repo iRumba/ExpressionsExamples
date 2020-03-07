@@ -5,6 +5,7 @@ using System;
 
 namespace Expressions.Tests
 {
+    [TestFixture]
     public class MappersTests
     {
         [SetUp]
@@ -16,14 +17,14 @@ namespace Expressions.Tests
         public void ReflectionMapTest()
         {
             var date = DateTime.Now;
-            var clonnedClass = new ClonnedClass
+            var clonnedClass = new MappedClass
             {
                 DateTimeProp = date,
                 IntProp = 5,
                 StringProp = "qwe"
             };
 
-            var destClass = new DestCloneClass
+            var destClass = new DestClass
             {
                 DateTimeProp = date,
                 IntProp = 5,
@@ -32,9 +33,9 @@ namespace Expressions.Tests
 
             var mapper = new ReflectionMapper();
 
-            mapper.Register<ClonnedClass, DestCloneClass>();
+            mapper.Register<MappedClass, DestClass>();
 
-            var mapped = mapper.Map<ClonnedClass, DestCloneClass>(clonnedClass);
+            var mapped = mapper.Map<MappedClass, DestClass>(clonnedClass);
 
             mapped.Should().BeEquivalentTo(destClass);
 
@@ -45,14 +46,14 @@ namespace Expressions.Tests
         public void ExpressionMapTest()
         {
             var date = DateTime.Now;
-            var clonnedClass = new ClonnedClass
+            var clonnedClass = new MappedClass
             {
                 DateTimeProp = date,
                 IntProp = 5,
                 StringProp = "qwe"
-            };
+            }; 
 
-            var destClass = new DestCloneClass
+            var destClass = new DestClass
             {
                 DateTimeProp = date,
                 IntProp = 5,
@@ -61,9 +62,9 @@ namespace Expressions.Tests
 
             var mapper = new ExpressionMapper();
 
-            mapper.Register<ClonnedClass, DestCloneClass>();
+            mapper.Register<MappedClass, DestClass>();
 
-            var mapped = mapper.Map<ClonnedClass, DestCloneClass>(clonnedClass);
+            var mapped = mapper.Map<MappedClass, DestClass>(clonnedClass);
 
             mapped.Should().BeEquivalentTo(destClass);
 

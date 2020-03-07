@@ -3,22 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 
 namespace Runner
 {
     public class ExpressionMapper : IMyMapper
     {
         private IDictionary<Type, IDictionary<Type, Delegate>> _propsCache
-    = new Dictionary<Type, IDictionary<Type, Delegate>>();
+            = new Dictionary<Type, IDictionary<Type, Delegate>>();
 
         public TTo Map<TFrom, TTo>(TFrom source)
+        {
+            return GetFunc<TFrom,TTo>()(source);
+        }
+
+        public Func<TFrom, TTo> GetFunc<TFrom, TTo>()
         {
             var fromType = typeof(TFrom);
             var toType = typeof(TTo);
 
             var func = (Func<TFrom, TTo>)_propsCache[fromType][toType];
-            return func(source);
+
+            return func;
         }
 
         public void Register<TFrom, TTo>()
@@ -33,10 +38,10 @@ namespace Runner
             var toDict = toProps.ToDictionary(x => x.Name);
 
             var intersects = fromDict.Keys.Intersect(toDict.Keys);
+            
+            var sourceParam = Expression.Parameter(fromType, "x");
 
-            var instanceExpression = Expression.New(toType);
-
-            var sourceParam = Expression.Parameter(fromType);
+            var instanceExpression = Expression.New(toType);            
 
             var initExpression = Expression.MemberInit(instanceExpression, 
                 intersects.Select(x => 

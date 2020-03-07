@@ -1,5 +1,4 @@
 ﻿using BenchmarkDotNet.Running;
-using System;
 
 namespace Runner
 {
@@ -7,8 +6,7 @@ namespace Runner
     {
         static void Main(string[] args)
         {
-            BenchmarkRunner.Run<CloneBenchmarks>();
-            Console.WriteLine("Hello World!");
+            BenchmarkRunner.Run<MappingBenchmarks>();
         }
     }
 }
